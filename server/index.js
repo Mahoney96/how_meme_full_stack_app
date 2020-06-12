@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const massive = require("massive");
 const session = require("express-session")
-const { SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process;
+const { SERVER_PORT, CONNECTION_STRING, SESSION_SECRET } = process.env;
 const ctrl = require("./controller");
 const favCtrl = require("./favController");
 
@@ -28,10 +29,10 @@ app.put("/api/memes/:id", ctrl.updateMeme);
 app.delete("/api/favorites/:id", favCtrl.deleteFav);
 app.delete("/api/memes", ctrl.deleteMeme);
 
-massive(CONNECTION_STRING).then(db => {
+massive({connectString: CONNECTION_STRING, ss1: {rejectUnathorized: false}}).then(db => {
 	app.set("db", db);
 	console.log("db connected");
-	app.get(SERVER_PORT, () =>
+	app.listen(SERVER_PORT, () =>
 		console.log(`Server running on ${SERVER_PORT}`)
 	);
 });

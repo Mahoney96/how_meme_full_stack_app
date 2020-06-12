@@ -1,8 +1,10 @@
+import axios from 'axios';
 const initialState = {
     favorited: []
 }
 
 const DELETE_FAVORITE = "DELETE_FAVORITE"
+const ADD_FAVORITE = "ADD_FAVORITE"
 
 export const favorited = (memeInfo) => {
     let favorites = axios.post('/api/favorites', memeInfo).then(res => res.data)
